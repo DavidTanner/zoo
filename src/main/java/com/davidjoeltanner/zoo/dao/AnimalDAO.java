@@ -1,19 +1,21 @@
-package com.davidjoeltanner.zoo;
+package com.davidjoeltanner.zoo.dao;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Animal {
-    
-    private final static List<Animal> _animals = new ArrayList<>();
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-    private final String name;
-    private String species;
-    private Zoo zoo;
-    private final List<Feeding> feedings;
+@Component
+public class AnimalDAO {
+
+    @Autowired private final String name;
+    @Autowired private String species;
+    @Autowired private ZooDAO zoo;
+    private final List<FeedingDAO> feedings;
     
-    public Animal(Zoo zoo, String name, String species) {
+    public AnimalDAO(ZooDAO zoo, String name, String species) {
         if (name == null) {
             throw new NullPointerException("Name cannot be null");
         }
@@ -27,14 +29,13 @@ public class Animal {
         this.name = name;
         this.species = species;
         feedings = new ArrayList<>();
-        _animals.add(this);
     }
     
     public String getName() {
         return name;
     }
     
-    public Zoo getZoo() {
+    public ZooDAO getZoo() {
         return zoo;
     }
     
@@ -42,16 +43,16 @@ public class Animal {
         return species;
     }
     
-    public List<Feeding> getFeedings() {
+    public List<FeedingDAO> getFeedings() {
         return feedings;
     }
     
-    public void feedAnimal(InventoryItem food, double amount) {
-        feedAnimal(LocalDateTime.now(), food, amount);
+    public void feedAnimal(InventoryItemDAO item, double amount) {
+        feedAnimal(LocalDateTime.now(), item, amount);
     }
     
-    public void feedAnimal(LocalDateTime date, InventoryItem food, double amount) {
-        Feeding feeding = new Feeding();
+    public void feedAnimal(LocalDateTime date, InventoryItemDAO item, double amount) {
+        FeedingDAO feeding = new FeedingDAO(date, item, amount, this);
         feedings.add(feeding);
     }
 }

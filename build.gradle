@@ -1,5 +1,9 @@
 apply plugin: 'java'
+apply plugin: 'eclipse'
 apply plugin: 'application'
+
+mainClassName = 'com.davidjoeltanner.zoo.Main'
+
 
 repositories {
     mavenCentral()
@@ -11,14 +15,20 @@ targetCompatibility = 1.8
 sourceSets {
     main {
         java {
-            srcDir 'src'
-        }
-    }
-    test {
-        java {
-            srcDir 'test'
+            srcDir 'src/main/java'
         }
     }
 }
 
-mainClassName = 'com.davidjoeltanner.zoo.Main'
+dependencies {
+    compile 'org.springframework.boot:spring-boot-starter-jdbc:1.4.0.RELEASE'
+}
+
+jar {
+  manifest {
+    attributes(
+      "Implementation-Title": project.name,
+      "Main-Class": mainClassName,
+      "Class-Path": configurations.compile.collect { it.getName() }.join(' '))
+  }
+}

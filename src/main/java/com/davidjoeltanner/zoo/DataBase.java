@@ -1,5 +1,4 @@
 package com.davidjoeltanner.zoo;
 
-public class InventoryItem {
-
+public class DataBase {
 }

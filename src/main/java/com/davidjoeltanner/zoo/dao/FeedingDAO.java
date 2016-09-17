@@ -1,17 +1,17 @@
-package com.davidjoeltanner.zoo;
+package com.davidjoeltanner.zoo.dao;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
-public class Feeding {
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
+public class FeedingDAO {
     
-    private static final List<Feeding> _feedings = new ArrayList<>();
-
-    private LocalDateTime date;
-    private double amount;
-    private InventoryItem item;
-    private Animal animal;
+    @Autowired private LocalDateTime date;
+    @Autowired private double amount;
+    @Autowired private InventoryItemDAO item;
+    @Autowired private AnimalDAO animal;
     
     public double getAmount() {
         return amount;
@@ -21,19 +21,19 @@ public class Feeding {
         this.amount = amount;
     }
 
-    public InventoryItem getItem() {
+    public InventoryItemDAO getItem() {
         return item;
     }
 
-    public void setItem(InventoryItem item) {
+    public void setItem(InventoryItemDAO item) {
         this.item = item;
     }
 
-    public Animal getAnimal() {
+    public AnimalDAO getAnimal() {
         return animal;
     }
 
-    public void setAnimal(Animal animal) {
+    public void setAnimal(AnimalDAO animal) {
         this.animal = animal;
     }
     
@@ -45,11 +45,7 @@ public class Feeding {
         this.date = date;
     }
     
-    public List<Feeding> getAllFeedings() {
-        return _feedings;
-    }
-
-    public Feeding(LocalDateTime date, double amount, InventoryItem item, Animal animal) {
+    public FeedingDAO(LocalDateTime date, InventoryItemDAO item, double amount, AnimalDAO animal) {
         if (date == null) {
             throw new NullPointerException("Date cannot be null");
         }
