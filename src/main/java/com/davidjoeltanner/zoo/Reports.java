@@ -33,23 +33,73 @@ public class Reports {
         this.invItemDao = inventoryitemDao;
         this.feedingDao = feedingDao;
     }
+
+    private int menu() {
+        System.out.println("\nPlease choose from the following options: ");
+        System.out.println("0: Return to main menu");
+        System.out.println("1: List Animals in all Zoos");
+        System.out.println("2: Average feeding amount by animal");
+        System.out.println("3: Average number of feeding sessions by species");
+        int option = scanner.nextInt();
+        return option;
+    }
+    
     
     public void run() {
         int option = menu();
         while(option != 0) {
             switch (option) {
                 case 1: 
-                    animalDao.findAll().forEach(animal -> 
-                    System.out.printf("%s is a %s in the %s zoo\n", 
-                                      animal.getName(), animal.getSpecies(), animal.getZoo().getName())
-                    );
+                    runAnimalsListReport();
                     break;
                 case 2: 
                     runAverageFeedingReport();
                     break;
+                case 3:
+                    runAverageFeedingTimesReport();
+                    break;
             }
             option = menu();
         }
+    }
+    
+    private void runAnimalsListReport() {
+        animalDao.findAll().forEach(animal -> 
+                System.out.printf("%s is a %s in the %s zoo\n", 
+                          animal.getName(), animal.getSpecies(), animal.getZoo().getName())
+        );
+    }
+    
+    private void runAverageFeedingTimesReport() {
+        final DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        final Map<String, Map<String, Integer>> counters = new HashMap<>();
+        
+        feedingDao.findAll().forEach(feeding -> {
+            String species = feeding.getAnimal().getSpecies();
+            LocalDateTime dateTime = feeding.getDateTime();
+            String bucket = dateTime.format(format);
+            
+            counters.compute(species, (k1, v1) -> {
+                if (v1 == null) {
+                    v1 = new HashMap<>();
+                }
+                
+                v1.compute(bucket, (k2, v2) -> {
+                   return (v2 == null ? 0 : v2) + 1; 
+                });
+                return v1;
+            });
+        });
+
+        counters.forEach((species, buckets) -> {
+            final List<Integer> byDay = new ArrayList<>();
+            buckets.forEach((k, amount) -> {
+                byDay.add(amount);
+            });
+            double average = byDay.stream().mapToDouble(a -> a).average().getAsDouble();
+            System.out.printf("%ss are fed %3.1f times per day on average\n", 
+                              species, average);
+        });
     }
     
     private void runAverageFeedingReport() {
@@ -83,15 +133,6 @@ public class Reports {
         });
     }
         
-    
-    private int menu() {
-        System.out.println("\nPlease choose from the following options: ");
-        System.out.println("0: Return to main menu");
-        System.out.println("1: List Animals in all Zoos");
-        System.out.println("2: Average feeding amount by animal");
-        int option = scanner.nextInt();
-        return option;
-    }
     
 
 }

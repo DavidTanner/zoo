@@ -1,7 +1,10 @@
 package com.davidjoeltanner.zoo;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
+
+import org.springframework.format.datetime.standard.TemporalAccessorParser;
 
 import com.davidjoeltanner.zoo.models.AnimalDAO;
 import com.davidjoeltanner.zoo.models.FeedingDAO;
@@ -33,21 +36,40 @@ public class Actions {
         this.feedingDao = feedingDao;
         this.objects = new Objects(animalDao, zooDao, feedingDao, inventoryitemDao, inventoryEntryDao);
     }
-    
+
+    private String getString() {
+        String entry = scanner.nextLine().trim();
+        while(entry == null || entry.isEmpty()) {
+            entry = scanner.nextLine().trim();
+        }
+        return entry;
+    }
     
     public void feedAnimal() {
         Zoo zoo = objects.getZoo();
         Animal animal = objects.getAnimal(zoo);
         InventoryItem item = objects.getInventoryItem();
         
-        System.out.println("How much/many are you feeding " + animal.getName() + "?");
+        System.out.println("How much/many " + item.getName() + " are you feeding " + animal.getName() + "?");
         double amount = scanner.nextDouble();
+        
+        System.out.println("When did you feed " + animal.getName() + ", enter now or the date in YYYY-MM-DD hh:mm:ss format please.");
+        String dateTime = getString();
+        LocalDateTime date = LocalDateTime.now();
+        if (dateTime != null && !dateTime.isEmpty() && !dateTime.equalsIgnoreCase("now")) {
+            try {
+                date = LocalDateTime.parse(dateTime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            } catch (Exception e) {
+                System.out.printf("We were unable to understand (%s), returning to menu. %s", dateTime, e.getMessage());
+                return;
+            }
+        }
         
         Feeding feeding = new Feeding();
         feeding.setAnimal(animal);
         feeding.setItem(item);
         feeding.setAmount(amount);
-        feeding.setDateTime(LocalDateTime.now());
+        feeding.setDateTime(date);
         feedingDao.save(feeding);
     }
 
