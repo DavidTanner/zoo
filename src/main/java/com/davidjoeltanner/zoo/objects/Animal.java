@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,22 +29,33 @@ public class Animal {
     private Zoo zoo;
     
 
-    @OneToMany(mappedBy = "animal") 
+    @OneToMany(mappedBy = "animal", fetch = FetchType.EAGER) 
     private List<Feeding> feedings;
-
-    
-    protected Animal() {}
-
-    public Animal(String name, String species, Zoo zoo) {
-        this.name = name;
-        this.species = species;
-        this.zoo = zoo;
-    }
     
     public String getName() {
         return name;
     }
     
+    public List<Feeding> getFeedings() {
+        return feedings;
+    }
+
+    public void setFeedings(List<Feeding> feedings) {
+        this.feedings = feedings;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSpecies(String species) {
+        this.species = species;
+    }
+
+    public void setZoo(Zoo zoo) {
+        this.zoo = zoo;
+    }
+
     public Zoo getZoo() {
         return zoo;
     }

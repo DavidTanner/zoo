@@ -3,6 +3,7 @@ package com.davidjoeltanner.zoo.objects;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,10 +20,10 @@ public class Zoo {
     private long id; 
     private String name;
     
-    @OneToMany(mappedBy = "zoo")
+    @OneToMany(mappedBy = "zoo", fetch = FetchType.EAGER)
     private List<Animal> animals;
     
-    @OneToMany(mappedBy = "zoo") 
+    @OneToMany(mappedBy = "zoo", fetch = FetchType.EAGER) 
     private List<InventoryItem> inventory;
 
     public String getName() {

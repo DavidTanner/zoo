@@ -3,6 +3,7 @@ package com.davidjoeltanner.zoo.objects;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,7 +23,7 @@ public class InventoryItem {
     private String name;
     private double stock;
 
-    @OneToMany(mappedBy = "item")
+    @OneToMany(mappedBy = "item", fetch = FetchType.EAGER)
     private List<InventoryEntry> inventoryEntries;
     
     @ManyToOne

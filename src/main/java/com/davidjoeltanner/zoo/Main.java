@@ -36,15 +36,48 @@ public class Main implements CommandLineRunner{
 
     @Override
     public void run(String... args) throws Exception {
-        log.info("creating tables");
-        Zoo zoo = new Zoo();
-        zoo.setName("Cincinatti");
+        Scanner scanner = new Scanner(System.in);
+        Objects create = new Objects(animalDao, zooDao, feedingDao, invItemDao, invEntryDao);
+        Actions actions = new Actions(animalDao, zooDao, feedingDao, invItemDao, invEntryDao);
+        Reports reports = new Reports(animalDao, zooDao, feedingDao, invItemDao, invEntryDao);
         
-        zooDao.save(zoo);
+        int option = menu(scanner);
+        while (option != 0) {
+            switch (option) {
+                case 1: 
+                    create.getZoo();
+                    break;
+                case 2:
+                    create.createAnimal();
+                    break;
+                case 4: 
+                    actions.feedAnimal();
+                    break;
+                    
+                case 6:
+                    reports.run();
+                    break;
+            
+            }
+            option = menu(scanner);
+        }
+    }
+    
+    
+    private int menu(Scanner scanner) {
+        System.out.println("\n");
+        System.out.println("Please select an option:");
+        System.out.println("0: Exit program, History is lost due to time bug");
+        System.out.println("1: Add a Zoo");
+        System.out.println("2: Add an Animal");
+        System.out.println("3: Add an Inventory Item");
+        System.out.println("4: Feed an Animal");
+        System.out.println("5: Update Inventory");
+        System.out.println("6: Run Report");
         
-        log.info("Should be 1 " + zooDao.count());
-        zoo = zooDao.findByName("Cincinatti");
-        log.info(zoo.getName());
+        int option = scanner.nextInt();
+        System.out.println("\n");
+        return option;
     }
 
 }

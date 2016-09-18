@@ -7,7 +7,6 @@ buildscript {
     }
 }
 
-
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'application'
@@ -44,4 +43,8 @@ jar {
       "Main-Class": mainClassName,
       "Class-Path": configurations.compile.collect { it.getName() }.join(' '))
   }
+}
+
+run {
+    standardInput = System.in
 }

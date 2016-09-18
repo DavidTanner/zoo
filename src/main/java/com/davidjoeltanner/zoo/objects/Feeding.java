@@ -2,6 +2,7 @@ package com.davidjoeltanner.zoo.objects;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,8 +18,9 @@ public class Feeding {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", updatable = false, nullable = false)
     private long id;
-    private LocalDateTime date;
+    private LocalDateTime dateTime;
     private double amount;
     
     @OneToOne
@@ -53,12 +55,12 @@ public class Feeding {
         this.animal = animal;
     }
     
-    public LocalDateTime getDate() {
-        return date;
+    public LocalDateTime getDateTime() {
+        return dateTime;
     }
 
-    public void setDate(LocalDateTime date) {
-        this.date = date;
+    public void setDateTime(LocalDateTime date) {
+        this.dateTime = date;
     }
     
 }
