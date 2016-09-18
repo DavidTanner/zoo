@@ -50,6 +50,9 @@ public class Main implements CommandLineRunner{
                 case 2:
                     create.createAnimal();
                     break;
+                case 3:
+                    create.getInventoryItem();
+                    break;
                 case 4: 
                     actions.feedAnimal();
                     break;
@@ -67,12 +70,12 @@ public class Main implements CommandLineRunner{
     private int menu(Scanner scanner) {
         System.out.println("\n");
         System.out.println("Please select an option:");
-        System.out.println("0: Exit program, History is lost due to time bug");
+        System.out.println("0: Exit program");
         System.out.println("1: Add a Zoo");
         System.out.println("2: Add an Animal");
         System.out.println("3: Add an Inventory Item");
         System.out.println("4: Feed an Animal");
-        System.out.println("5: Update Inventory");
+//        System.out.println("5: Update Inventory");
         System.out.println("6: Run Report");
         
         int option = scanner.nextInt();

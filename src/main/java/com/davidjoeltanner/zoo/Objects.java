@@ -93,12 +93,18 @@ public class Objects {
         Zoo zoo = getZoo(zooName);
         return getAnimal(name, species, zoo);
     }
-    
+
     public InventoryItem getInventoryItem() {
+        Zoo zoo = getZoo();
+        return getInventoryItem(zoo);
+    }
+    
+    
+    public InventoryItem getInventoryItem(Zoo zoo) {
         System.out.println("Please enter the item name: ");
         String name = getString();
         
-        InventoryItem item = invItemDao.findByName(name);
+        InventoryItem item = invItemDao.findByNameAndZoo(name, zoo);
         if (item != null) {
             return item;
         }
@@ -108,6 +114,7 @@ public class Objects {
         System.out.println("Please enter how many/much you have of " + name + ": ");
         double stock = scanner.nextDouble();
         item.setStock(stock);
+        item.setZoo(zoo);
         invItemDao.save(item);
         return item;
     }

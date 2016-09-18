@@ -39,7 +39,7 @@ public class Reports {
         System.out.println("0: Return to main menu");
         System.out.println("1: List Animals in all Zoos");
         System.out.println("2: Average feeding amount by animal");
-        System.out.println("3: Average number of feeding sessions by species");
+//        System.out.println("3: Average number of feeding sessions by species"); Under construction
         int option = scanner.nextInt();
         return option;
     }
@@ -70,7 +70,7 @@ public class Reports {
         );
     }
     
-    private void runAverageFeedingTimesReport() {
+    private void runAverageFeedingTimesReport() { // TODO: Average needs to take into account multiples of each species.
         final DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         final Map<String, Map<String, Integer>> counters = new HashMap<>();
         

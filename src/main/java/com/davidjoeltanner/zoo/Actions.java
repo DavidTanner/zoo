@@ -48,7 +48,7 @@ public class Actions {
     public void feedAnimal() {
         Zoo zoo = objects.getZoo();
         Animal animal = objects.getAnimal(zoo);
-        InventoryItem item = objects.getInventoryItem();
+        InventoryItem item = objects.getInventoryItem(zoo);
         
         System.out.println("How much/many " + item.getName() + " are you feeding " + animal.getName() + "?");
         double amount = scanner.nextDouble();
